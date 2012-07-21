@@ -1,24 +1,34 @@
   /* Landscape phones and down */
   @media (max-width: 480px) {
-
+    body {
+        border: 2px magenta solid;
+    }
   }
 
   /* Landscape phone to portrait tablet */
-  @media (max-width: 768px) {
-
+  @media (min-width: 480px) and (max-width: 768px) {
+    body {
+        border: 2px grey solid;
+    }
   }
 
   /* Portrait tablet to landscape and desktop */
   @media (min-width: 768px) and (max-width: 979px) {
-
+    body {
+        border: 2px blue solid;
+    }
   }
 
   /* Desktop */
   @media (min-width: 979px) and (max-width: 1200px) {
-
+     body {
+        border: 2px orange solid;
+     }
   }
 
   /* Large desktop */
   @media (min-width: 1200px) {
-
+    body {
+        border: 2px red solid;
+    }
   }

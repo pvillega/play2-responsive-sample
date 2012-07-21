@@ -1,8 +1,124 @@
 @()(implicit request: play.api.mvc.RequestHeader)
 
 @main("Sample on responsive design") {
-    
+
+    @* We use a fluid layout from bootstrap to adapt to different resolutions *@
+    <div class="container-fluid">
+        <div class="row-fluid">
+            @* The sidebar won't be shown in smallest screens like phone or tablet. This means that we want to load the content conditionally as per screen size *@
+            <div class="span2 visible-desktop">
+                <!--Sidebar content, this could go into main.scala or a parent template -->
+                <h2>Dynamic Sidebar</h2>
+                <p>This sidebar loads a minimal amount of content by default. If we will display it, some ajax requests will populate it with extra content.</p>
+                <hr/>
+                <div id="sidebar">
+                    @* We provide a link to access the data we are not loading in case the user resizes the screen and sees this bar *@
+                    <a href="http://www.google.com/search?q=responsive+design&amp;amp;tbm=nws">Search Google on Responsive Design</a>
+                </div>
+            </div>
+            <div class="span10">
+                <!--Body content-->
+                <h1>A Responsive page</h1>
+                <p>The idea of this sample is to show 2 important concepts in a simplified environment:</p>
+                <ul>
+                    <li><strong>Responsive Layout</strong>: the layout adapts dynamically to the size of the browser displaying the data</li>
+                    <li><strong>Mobile first design</strong>: the layout is rendered for a mobile version and adds extra details for bigger screens</li>
+                </ul>
+                <p><strong>Responsive layout</strong> is not just a Buzzword. We are in a mobile world, were you can't guess the resolution of the screen browsing your web application.
+                    <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> provides styles to facilitate the construction of responsive layouts, which is great.
+                    But Responsive is not only "hide some elements when you are in a tiny screen". Elements hidden by CSS are downloaded anyway, and in a mobile network that can be problematic.
+                </p>
+                <p>
+                    <strong>Mobile First</strong> is a concept that tries to solve that. The idea is to design the minimal layout that works for your application, that layout that mobile users will see, and add more options if the user has a bigger screen.
+                    How? By conditionally loading elements, using Javascript to modify your HTML or via Ajax requests.
+                </p>
+                <p>
+                    This single page will use media queries and javascript to delay loading some content and to not render other content according to your viewport.
+                    It is a simplified environment, but it should give an idea on how to develop these concepts for bigger projects.
+                    To test the CSS media queries, the border of the body will change color as per viewport size.
+                </p>
+                <hr/>
+                <h2>Below: delayed load of images</h2>
+                <p>The following images are loaded after all the text content is loaded. Sizes change as per viewport (only on load, if you resize the size keeps the same)</p>
+                @* Loading many random comments with random avatars *@
+                @for(i <- 1 to 100) {
+                <div class="row-fluid">
+                    @for(j <- 1 to 5) {
+                    <div class="span2">
+                        <h4>
+                            <a href="http://gravatar.com/" data-gravatar-hash="205e460b479e2e5b48aec07710c08d50">Drew McLellan</a>
+                        </h4>
+                        <p>This is a great article!</p>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <script>
+        /* Declaring this method outside the "on load" calls so it's on scope for callbacks */
+        var displayNews = function(news) {
+            var html = '';
+            var items = news.responseData.results;
+            var total = items.length;
+            if (total > 0) {
+                for (var i=0; i < total; i++) {
+                    var item = items[i];
+                    html+= '<article>';
+                    html+= '<a href="'+item.unescapedUrl+'">';
+                    html+= '<h3>'+item.titleNoFormatting+'</h3>';
+                    html+= '</a>';
+                    html+= '<p>';
+                    html+= item.content;
+                    html+= '</p>';
+                    html+= '</article>';
+                }
+                document.getElementById('sidebar').innerHTML = html;
+            }
+        };
+
+        /* This loads the content of the side bar asynchronously, so we won't do that request if the sidebar won't be shown */
+        $(function() {
+            var searchGoogle = function(term) {
+                var elem = document.createElement('script');
+                elem.src = 'http://ajax.googleapis.com/ajax/services/search/news?v=1.0&q='+term+'&callback=displayNews';
+                document.getElementsByTagName('head')[0].appendChild(elem);
+            };
+
+            if ($(window).width() >= 979) {
+                searchGoogle('responsive+design');
+            }
+       });
+
+       /* This loads the avatars asynchronously, so the response time of the page improves as images are loaded by the browser after all content is ready */
+       $(function() {
+            /* Dynamically select an image size as per viewport size */
+            function getAvatarSize() {
+                var size = 100;
+                // we check the viewport width against the same sizes we use in media queries in CSS */
+                var viewport = $(window).width();
+                if(viewport <=  480) {
+                    size = 25;
+                } else if(viewport <= 768) {
+                    size = 75;
+                } else if(viewport <= 979) {
+                    size = 125;
+                } else {
+                    size = 175;
+                }
+                return size;
+            }
+            var avatarSize = getAvatarSize();
+
+            /* Load all avatars now */
+            $('a[data-gravatar-hash]').prepend(function(index){
+                var hash = $(this).attr('data-gravatar-hash')
+                return '<img alt="Avatar Image" src="http://www.gravatar.com/avatar.php?size=' + avatarSize + '&amp;gravatar_id=' + hash + '"><br/>'
+            });
 
 
 
+        });
+    </script>
 }
