@@ -37,6 +37,37 @@
                     It is a simplified environment, but it should give an idea on how to develop these concepts for bigger projects.
                     To test the CSS media queries, the border of the body will change color as per viewport size.
                 </p>
+                <h3>Google Ads</h3>
+                <p>
+                    One issue with responsive design is making Google Ads change according to the viewport size. Google Ads are not responsive, they have a fixed size which means that you won't be able
+                    to modify them dynamically. Luckily <a href="http://www.labnol.org/internet/google-adsense-responsive-design/25252/">http://www.labnol.org/internet/google-adsense-responsive-design/25252/</a>
+                    proposes a solution to this problem.
+                </p>
+                <p>
+                    The solution consists on creating 3 sets of ad units (say 768×90, 468×60 and 300×250) and based on the size (width) of the user’s device, the most appropriate format get served.
+                    The following code shows how it would be done (replace <em>ad_slot</em> and <em>ad_client</em> by the values of your own ads):
+                </p>
+                <pre>
+                    <code>
+                        &lt;script type="text/javascript"&gt;
+                            google_ad_client = "my-ad-id";
+                            if (window.innerWidth >= 800) {
+                                google_ad_slot = "ad-size-1";
+                                google_ad_width = 728;
+                                google_ad_height = 60;
+                            } else if (window.innerWidth < 400) {
+                                google_ad_slot = "ad-size-2";
+                                google_ad_width = 300;
+                                google_ad_height = 250;
+                            } else {
+                                google_ad_slot = "ad-size-3";
+                                google_ad_width = 468;
+                                google_ad_height = 60;
+                            }
+                        &lt;/script&gt;
+                        &lt;script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"&gt;&lt;/script&gt;
+                    </code>
+                </pre>
                 <hr/>
                 <h2>Below: delayed load of images</h2>
                 <p>The following images are loaded after all the text content is loaded. Sizes change as per viewport (only on load, if you resize the size keeps the same)</p>
