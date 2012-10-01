@@ -37,6 +37,13 @@
                     It is a simplified environment, but it should give an idea on how to develop these concepts for bigger projects.
                     To test the CSS media queries, the border of the body will change color as per viewport size.
                 </p>
+                <h3>Responsive Favicons</h3>
+                <p>Favicons may be used in different contexts by the browser, like Bookmark links, etc. This, along new HD displays, means that 16x16 favicons may not be enough.</p>
+                <p>To solve the issue you should provide:</p>
+                <ul>
+                    <li>An ico favicon with layeers at 16x16, 24x24, 32x32 and 64x64. See instructions for Gimp <a href="http://egressive.com/tutorial/creating-a-multi-resolution-favicon-including-transparency-with-the-gimp">here</a>. This way the system will use the best size for the job</li>
+                    <li>Provide several png versions of the favicon, at 57x57, 72x72, 114x114 and 144x144. They will be used by mobile devices (like IOS). You can link them in the header via <em>link</em> or you can just leave them in the root of the application, they'll be picked up anyway. You can read more about it <a href="http://taylor.fausak.me/2012/03/27/ios-web-app-icons-and-startup-images/">here</a> </li>
+                </ul>
                 <h3>Google Ads</h3>
                 <p>
                     One issue with responsive design is making Google Ads change according to the viewport size. Google Ads are not responsive, they have a fixed size which means that you won't be able
@@ -68,6 +75,23 @@
                         &lt;script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"&gt;&lt;/script&gt;
                     </code>
                 </pre>
+                <h3>Responsive images with Picturefill</h3>
+                <p>Picturefilll allows us to select the image we want to display using a media-query. This javascript library uses <em>div</em> tags to which we add some specific metadata, the
+                path and the media query to validate against. When loading the page, the library will scan all div elements with valid metadata and replace the ones that pass the media query by an image.</p>
+                <p>The image is kept responsive, browser size changes will load the corresponding image. This is also a form of delayed loading, in which the image is loaded after the text content is rendered, speeding up the site.</p>
+                @* Example *@
+                <div data-picture data-alt="A giant stone face at The Bayon temple in Angkor Thom, Cambodia">
+                    <div data-src="@routes.Assets.at("images/small.jpg")"></div>
+                    <div data-src="@routes.Assets.at("images/medium.jpg")"     data-media="(min-width: 400px)"></div>
+                    <div data-src="@routes.Assets.at("images/large.jpg")"      data-media="(min-width: 800px)"></div>
+                    <div data-src="@routes.Assets.at("images/extralarge.jpg")" data-media="(min-width: 1000px)"></div>
+
+                    <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+                    <noscript>
+                        <img src="@routes.Assets.at("images/small.jpg")" alt="A giant stone face at The Bayon temple in Angkor Thom, Cambodia">
+                    </noscript>
+                </div>
+                @* End Example *@
                 <hr/>
                 <h2>Below: delayed load of images</h2>
                 <p>The following images are loaded after all the text content is loaded. Sizes change as per viewport (only on load, if you resize the size keeps the same)</p>

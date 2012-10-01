@@ -11,6 +11,8 @@ The ideas behind this sample come from several sources, including:
 * http://24ways.org/2011/conditional-loading-for-responsive-designs
 * http://24ways.org/2010/speed-up-your-site-with-delayed-content
 * http://www.netmagazine.com/features/five-responsive-web-design-pitfalls-avoid
+* http://nashape.com/blog/2012/09/12/big-favicons/
+* https://github.com/scottjehl/picturefill
 
 ## License
 

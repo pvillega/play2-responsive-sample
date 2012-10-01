@@ -40,5 +40,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
         <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js">\x3C/script>')</script>
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        @* Matchmedia is an external polyfill to allow media query testing in js if not supported by browser *@
+        <script src="@routes.Assets.at("javascripts/matchmedia.js")" type="text/javascript"></script>
+        @* Picturefill allows displaying of responsive images using media queries *@
+        <script src="@routes.Assets.at("javascripts/picturefill.js")" type="text/javascript"></script>
     </body>
 </html>
